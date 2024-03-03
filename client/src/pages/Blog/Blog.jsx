@@ -17,8 +17,8 @@ function Blog() {
     post_creation: "27/10/2023",
   };
 
-  const accessToken = localStorage.getItem("accessToken");
   const [posts, setPosts] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {
     const fetchData = async () => {
       try {

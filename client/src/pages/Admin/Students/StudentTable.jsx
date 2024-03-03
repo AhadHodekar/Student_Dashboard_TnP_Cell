@@ -1,45 +1,94 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FixedSizeList as List } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { useAdminContext } from "../../context/AdminContext"; // Import your context
+import React, { useState, useEffect, useMemo } from "react";
+import axios from "axios";
+
+import { AgGridReact } from "ag-grid-react"; // AG Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import EditButton from "./components/EditButton";
 
 const StudentTable = () => {
-  const [studentData, setStudentData] = useState([]);
-  const { students } = useAdminContext(); // Retrieve students from context
+  const [students, setStudents] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
+
   useEffect(() => {
-    setStudentData(students);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3939/api/student/get-students",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        setStudents(response.data);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    if (accessToken) {
+      fetchData();
+    }
+  }, [accessToken]);
+
+  // const [rowData, setRowData] = useState([
+  //   { make: "Tesla", model: "Model Y", price: 64950, electric: true },
+  //   { make: "Ford", model: "F-Series", price: 33850, electric: false },
+  //   { make: "Toyota", model: "Corolla", price: 29600, electric: false },
+  // ]);
+
+  // Column Definitions: Defines the columns to be displayed.
+  const [colDefs, setColDefs] = useState([
+    { field: "enrollment_no", filter: true, width: 150 },
+    { field: "student_name", width: 300 },
+    { field: "course_name" },
+    { field: "course_year", width: 150 },
+    { field: "academic_year", width: 150 },
+    { field: "gender", width: 100 },
+    { field: "student_email" },
+    { field: "student_mobile_no" },
+    { field: "birth_date", type: ["dateColumn", "nonEditableColumn"] },
+    // { field: "button", cellRenderer: EditButton },
+  ]);
+
+  const defaultColDef = useMemo(() => {
+    return {
+      filter: "agTextColumnFilter",
+      floatingFilter: true,
+    };
   }, []);
 
-  // Render individual student row
-  const Row = ({ index, style }) => {
-    const student = studentData[index];
-    return (
-      <div style={style}>
-        <div>Enrollment No: {student.enrollment_no}</div>
-        <div>Student Name: {student.student_name}</div>
-        <div>Course Name: {student.course_name}</div>
-        <div>Course Year: {student.course_year}</div>
-        <div>Birth Date: {student.birth_date}</div>
-        {/* Add more student information as needed */}
-      </div>
-    );
-  };
+  // const columnTypes = useMemo(() => {
+  //   return {
+  //     nonEditableColumn: { editable: false },
+  //     dateColumn: {
+  //       filter: "agDateColumnFilter",
+  //       filterParams: { comparator: myDateComparator },
+  //       suppressHeaderMenuButton: true,
+  //     },
+  //   };
+  // }, []);
 
   return (
-    <div className="h-full w-full overflow-hidden ">
-      <h2>Student List</h2>
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            height={height}
-            width={width}
-            itemCount={students.length}
-            itemSize={150}
-          >
-            {Row}
-          </List>
-        )}
-      </AutoSizer>
+    <div className="p-4">
+      <div
+        className="ag-theme-quartz" // applying the grid theme
+        style={{ height: 800 }} // the grid will fill the size of the parent container
+      >
+        <AgGridReact
+          rowData={students}
+          columnDefs={colDefs}
+          defaultColDef={defaultColDef}
+          rowSelection="multiple"
+          suppressRowClickSelection={true}
+          pagination={true}
+          paginationPageSize={15}
+          paginationPageSizeSelector={[15, 50, 150, 250]}
+          // columnTypes={columnTypes}
+        />
+      </div>
     </div>
   );
 };

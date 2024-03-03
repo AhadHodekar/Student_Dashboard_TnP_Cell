@@ -1,7 +1,12 @@
 import React from "react";
+import StudentTable from "./StudentTable";
 
 const Students = () => {
-  return <div>Students</div>;
+  return (
+    <div>
+      <StudentTable />
+    </div>
+  );
 };
 
 export default Students;
