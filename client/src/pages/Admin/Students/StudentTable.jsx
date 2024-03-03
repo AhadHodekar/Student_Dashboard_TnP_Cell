@@ -49,7 +49,11 @@ const StudentTable = () => {
     { field: "gender", width: 100 },
     { field: "student_email" },
     { field: "student_mobile_no" },
-    { field: "birth_date", type: ["dateColumn", "nonEditableColumn"] },
+    {
+      field: "birth_date",
+      type: ["dateColumn", "nonEditableColumn"],
+      width: 150,
+    },
     // { field: "button", cellRenderer: EditButton },
   ]);
 
@@ -75,7 +79,7 @@ const StudentTable = () => {
     <div className="p-4">
       <div
         className="ag-theme-quartz" // applying the grid theme
-        style={{ height: 800 }} // the grid will fill the size of the parent container
+        style={{ height: 820 }} // the grid will fill the size of the parent container
       >
         <AgGridReact
           rowData={students}
@@ -85,7 +89,7 @@ const StudentTable = () => {
           suppressRowClickSelection={true}
           pagination={true}
           paginationPageSize={15}
-          paginationPageSizeSelector={[15, 50, 150, 250]}
+          paginationPageSizeSelector={[15, 50, 150, 250, 500]}
           // columnTypes={columnTypes}
         />
       </div>
