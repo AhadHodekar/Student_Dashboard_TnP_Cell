@@ -8,4 +8,3 @@ export const db = mysql.createConnection({
         password: process.env.PASSWORD,
 
 })
-console.log(process.env.PASSWORD)
