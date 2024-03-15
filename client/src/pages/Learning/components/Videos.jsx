@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 const Videos = () => {
   const { role } = useAuth();
+  const navigate = useNavigate();
   const [videoUrls, setVideoUrls] = useState([]);
   const [processedVideos, setProcessedVideos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+  const [isVideoDeleted, setIsVideoDeleted] = useState(false);
 
+  const toggleDeleteVisibility = () => {
+    setIsDeleteVisible(!isDeleteVisible);
+  };
   useEffect(() => {
     const fetchVideoUrls = async () => {
       try {
@@ -17,6 +23,7 @@ const Videos = () => {
           "http://localhost:3939/api/learning/videos"
         );
         setVideoUrls(response.data);
+
         // console.log(response.data);
       } catch (error) {
         console.error("Error fetching video URLs:", error);
@@ -24,7 +31,12 @@ const Videos = () => {
     };
 
     fetchVideoUrls();
-  }, []);
+    if (isVideoDeleted) {
+      // Re-fetch videos if deletion happened
+      fetchVideoUrls();
+      setIsVideoDeleted(false); // Reset state after re-fetch
+    }
+  }, [isVideoDeleted]);
 
   useEffect(() => {
     const processVideos = async () => {
@@ -67,6 +79,7 @@ const Videos = () => {
       const response = await axios.delete(url);
       if (response.status === 200) {
         console.log("Video deleted successfully!");
+        setIsVideoDeleted(true);
         // Optionally, refetch videos after deletion for real-time updates
       }
     } catch (error) {
@@ -115,9 +128,17 @@ const Videos = () => {
         </div>
         <div className="">
           {role === "admin" ? (
-            <Link to={"/video-form"}>
-              <button className="btn btn-primary ">ADD VIDEO</button>
-            </Link>
+            <div className="flex gap-4">
+              <button
+                className="btn btn-outline"
+                onClick={toggleDeleteVisibility}
+              >
+                ✏️
+              </button>
+              <Link to={"/video-form"}>
+                <button className="btn btn-primary ">ADD VIDEO</button>
+              </Link>
+            </div>
           ) : null}
         </div>
       </nav>
@@ -139,20 +160,65 @@ const Videos = () => {
                         alt="Video Thumbnail"
                       />
                       <h3>{processedVideo.title}</h3>
-                      <p>Category: {processedVideo.category}</p>
                     </a>
                   ) : (
                     <p>Error fetching video details</p>
                   )}
                   {/* Optionally, display other video details from processedVideo */}
-                  <div className="flex gap-4">
+                  <div className="w-full flex justify-between  gap-4">
+                    <p>
+                      Category:{" "}
+                      <span className="font-semibold badge">
+                        {processedVideo.category}
+                      </span>
+                    </p>
                     {role === "admin" ? (
-                      <button
-                        onClick={handleDeleteVideo}
-                        data-video-id={processedVideo.id}
-                      >
-                        Delete
-                      </button>
+                      <>
+                        <button
+                          data-video-id={processedVideo.id}
+                          className="videodelete btn btn-error"
+                          style={{
+                            display: isDeleteVisible ? "block" : "none",
+                          }}
+                          onClick={() =>
+                            document.getElementById("my_modal_1").showModal()
+                          }
+                        >
+                          Delete
+                        </button>
+                        <dialog
+                          id="my_modal_1"
+                          className="videodelete modal modal-bottom sm:modal-middle"
+                        >
+                          <div className="modal-box flex flex-col gap-4">
+                            <h3 className="font-bold text-lg text-center">
+                              Delete Confirmation
+                            </h3>
+                            <div className="text-center text-black bg-red-300  rounded-md p-4 flex flex-col gap-4">
+                              <p className=" font-semibold">
+                                {processedVideo.title}
+                              </p>
+                              <p className="text-center  rounded-md">
+                                ⚠️ Confirming will permenantly delete the above
+                                video.
+                              </p>
+                            </div>
+                            <div className="modal-action flex flex-row justify-around items-center">
+                              <form method="dialog" className="flex gap-10">
+                                <button className="btn">Cancel</button>
+
+                                <button
+                                  data-video-id={processedVideo.id}
+                                  className="btn btn-error"
+                                  onClick={handleDeleteVideo}
+                                >
+                                  Confirm
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                        </dialog>
+                      </>
                     ) : null}
                   </div>
                 </div>

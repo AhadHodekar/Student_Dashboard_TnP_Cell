@@ -69,7 +69,8 @@ const BookUploadForm = () => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center ">
+    <div className="w-full h-full flex flex-col items-center justify-center ">
+      <h2 className="text-center font-bold mb-4">Upload Book</h2>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col justify-center bg-base-100  p-10 rounded-xl"

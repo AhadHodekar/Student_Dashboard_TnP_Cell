@@ -152,6 +152,116 @@ const Book = () => {
                   >
                     Edit
                   </button>
+                  <dialog
+                    id="my_modal_1"
+                    className="bookdelete modal modal-bottom sm:modal-middle"
+                  >
+                    <div className="modal-box">
+                      <h3 className="font-bold text-lg text-center">
+                        Delete Confirmation
+                      </h3>
+                      <p className="py-4 text-center">
+                        ⚠️ Confirming will permenantly delete the resource.
+                      </p>
+                      <div className="modal-action flex flex-row justify-around items-center">
+                        <form method="dialog" className="flex gap-10">
+                          <button className="btn">Cancel</button>
+
+                          <button
+                            className="btn btn-error"
+                            onClick={() => handleDelete(image.book_file_path)}
+                          >
+                            Confirm
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
+                  <dialog id="my_modal_3" className="bookedit modal ">
+                    <div className="modal-box w-[900px] h-auto">
+                      <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button className="btn btn-md btn-circle btn-ghost absolute right-2 top-2 overflow-hidden">
+                          ✕
+                        </button>
+                      </form>
+                      <form className="w-full">
+                        <div className="flex flex-col items-center justify-center gap-2 w-full">
+                          <h3 className="font-bold text-lg">Edit Details</h3>
+                          <input
+                            type="text"
+                            name=""
+                            id=""
+                            value={editedBookData.book_title} // Use editedBookData or fallback to original title
+                            placeholder="Title"
+                            className="input input-bordered w-full"
+                            // onChange={handleEditConfirm}
+                            onChange={(e) => {
+                              setEditedBookData({
+                                ...editedBookData,
+                                book_title: e.target.value,
+                              });
+                              // console.log(editedBookData);
+                            }}
+                          />
+                          <input
+                            type="text"
+                            name=""
+                            id=""
+                            value={editedBookData.book_author} // Use editedBookData or fallback to original author
+                            placeholder="Author"
+                            className="input input-bordered w-full"
+                            onChange={(e) =>
+                              setEditedBookData({
+                                ...editedBookData,
+                                book_author: e.target.value,
+                              })
+                            }
+                          />
+                          <select
+                            name="book_category"
+                            value={editedBookData.book_category} // Use editedBookData or fallback to original category
+                            // value={editedBookData.book_category || image.book_category} // Use editedBookData or fallback to original category
+                            className="select select-bordered w-full"
+                            onChange={(e) => {
+                              setEditedBookData({
+                                ...editedBookData,
+                                book_category: e.target.value,
+                              });
+                              // console.log(editedBookData);
+                            }}
+                          >
+                            <option value="technical">Technical</option>
+                            <option value="soft">Soft</option>
+                            <option value="programming">Programming</option>
+                          </select>
+                          <textarea
+                            className="textarea textarea-bordered mb-4 w-full"
+                            type="text"
+                            height="400px"
+                            name="book_description"
+                            value={editedBookData.book_description} // Use editedBookData or fallback to original description
+                            placeholder="Description"
+                            onChange={(e) =>
+                              setEditedBookData({
+                                ...editedBookData,
+                                book_description: e.target.value,
+                              })
+                            }
+                          />
+                          <button
+                            className="btn"
+                            onClick={handleEditConfirm}
+                            // onClick={() => {
+                            //   console.log(editedBookData);
+                            // }}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </dialog>
                 </>
               ) : null}
               <button
@@ -162,122 +272,6 @@ const Book = () => {
               </button>
             </div>
           </div>
-
-          <dialog id="my_modal_3" className="bookedit modal ">
-            <div className="modal-box w-[900px] h-auto">
-              <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
-                <button className="btn btn-md btn-circle btn-ghost absolute right-2 top-2 overflow-hidden">
-                  ✕
-                </button>
-              </form>
-              <form className="w-full">
-                <div className="flex flex-col items-center justify-center gap-2 w-full">
-                  <h3 className="font-bold text-lg">Edit Details</h3>
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    value={editedBookData.book_title} // Use editedBookData or fallback to original title
-                    placeholder="Title"
-                    className="input input-bordered w-full"
-                    // onChange={handleEditConfirm}
-                    onChange={(e) => {
-                      setEditedBookData({
-                        ...editedBookData,
-                        book_title: e.target.value,
-                      });
-                      // console.log(editedBookData);
-                    }}
-                  />
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    value={editedBookData.book_author} // Use editedBookData or fallback to original author
-                    placeholder="Author"
-                    className="input input-bordered w-full"
-                    onChange={(e) =>
-                      setEditedBookData({
-                        ...editedBookData,
-                        book_author: e.target.value,
-                      })
-                    }
-                  />
-                  <select
-                    name="book_category"
-                    value={editedBookData.book_category} // Use editedBookData or fallback to original category
-                    // value={editedBookData.book_category || image.book_category} // Use editedBookData or fallback to original category
-                    className="select select-bordered w-full"
-                    onChange={(e) => {
-                      setEditedBookData({
-                        ...editedBookData,
-                        book_category: e.target.value,
-                      });
-                      // console.log(editedBookData);
-                    }}
-                  >
-                    <option value="technical">Technical</option>
-                    <option value="soft">Soft</option>
-                    <option value="programming">Programming</option>
-                  </select>
-                  <textarea
-                    className="textarea textarea-bordered mb-4 w-full"
-                    type="text"
-                    height="400px"
-                    name="book_description"
-                    value={editedBookData.book_description} // Use editedBookData or fallback to original description
-                    placeholder="Description"
-                    onChange={(e) =>
-                      setEditedBookData({
-                        ...editedBookData,
-                        book_description: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    className="btn"
-                    onClick={handleEditConfirm}
-                    // onClick={() => {
-                    //   console.log(editedBookData);
-                    // }}
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </form>
-            </div>
-          </dialog>
-
-          {/*              asdasdasd         asdasdasd                              asdadasd             asda */}
-          {/*              asdasdasd         asdasdasd                              asdadasd             asda */}
-          {/*              asdasdasd         asdasdasd                              asdadasd             asda */}
-
-          <dialog
-            id="my_modal_1"
-            className="bookdelete modal modal-bottom sm:modal-middle"
-          >
-            <div className="modal-box">
-              <h3 className="font-bold text-lg text-center">
-                Delete Confirmation
-              </h3>
-              <p className="py-4 text-center">
-                ⚠️ Confirming will permenantly delete the resource.
-              </p>
-              <div className="modal-action flex flex-row justify-around items-center">
-                <form method="dialog" className="flex gap-10">
-                  <button className="btn">Cancel</button>
-
-                  <button
-                    className="btn btn-error"
-                    onClick={() => handleDelete(image.book_file_path)}
-                  >
-                    Confirm
-                  </button>
-                </form>
-              </div>
-            </div>
-          </dialog>
         </div>
       ))}
     </div>

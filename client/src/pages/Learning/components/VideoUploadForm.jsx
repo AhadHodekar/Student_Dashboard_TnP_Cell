@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const VideoUploadForm = () => {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("aptitude");
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -28,7 +28,7 @@ const VideoUploadForm = () => {
 
   return (
     <div className="w-full h-full flex flex-col  items-center justify-center ">
-      <h2 className="text-center mb-8">Video Upload Form</h2>
+      <h2 className="text-center font-bold mb-4">Add Video</h2>
       {errorMessage && <p className="error">{errorMessage}</p>}
       {successMessage && <p className="success">{successMessage}</p>}
       <form
