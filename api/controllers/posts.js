@@ -10,6 +10,15 @@ export const getPosts = (req, res) => {
     const q = "SELECT * FROM posts"
     db.query(q, (err, data) => {
         if (err) return res.status(500).json({ "error": err })
+        if (!err) return res.status(200).send(data)
+    })
+
+}
+export const getPost = (req, res) => {
+    const { id } = req.params
+    const q = "SELECT * FROM posts WHERE id=?"
+    db.query(q, [id], (err, data) => {
+        if (err) return res.status(500).json({ error: { message: "Database Error" } })
         if (!err) return res.status(200).json(data)
     })
 

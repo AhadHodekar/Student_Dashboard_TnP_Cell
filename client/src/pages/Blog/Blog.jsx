@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 function Blog() {
@@ -44,23 +44,31 @@ function Blog() {
 
   return (
     <div className="w-full h-full flex items-start justify-center overflow-y-scroll overflow-x-hidden">
-      {/* <p>{posts ? "check console" : "nod data found"}</p> */}
-      <div className="w-[900px] h-full bg-violet-400 text-center text-black">
-        <h1>Blog</h1>
-        <div className="flex flex-col items-center bg-gray-400">
+      <div className="w-[900px] h-full bg-base-300 text-center text-black">
+        {/* <h1>Blog</h1> */}
+        <div className="flex flex-col gap-0 items-center bg-gray-400">
           {/* <img src={postOne.post_image} width={200} height={200} /> */}
-          <h1>{postOne.post_title}</h1>
-          <p>{postOne.post_description}</p>
-          {role === "admin" ? <p>⫶</p> : null}
-        </div>
-        {/* {posts.map((post) => (
-            <div key={post.id}>
-              <img src={post.post_image} alt="" />
-              <p>{post.post_title}</p>
-              <p>{post.post_url}</p>
-              <p>{post.post_title}</p>
+          {posts.map((post) => (
+            <div
+              className="blog card w-[1000px] bg-base-100 shadow-xl bordered rounded-none"
+              key={post.id}
+            >
+              <div className="blog card-body">
+                <h2 className="blog card-title">{post.post_title}</h2>
+                <img src={post.post_image} alt="" />
+                <p>{post.post_url}</p>
+                <p>{post.post_description}</p>
+                <div className="bookdelete card-actions justify-end">
+                  <Link to={`/post/${post.id}`}>
+                    <button className="bookdelete btn bookdelete btn-primary">
+                      Read More...
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </div>
-          ))} */}
+          ))}
+        </div>
       </div>
       {role === "admin" ? (
         <div

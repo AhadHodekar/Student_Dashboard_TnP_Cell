@@ -6,21 +6,21 @@ import { Link } from "react-router-dom";
 const Learning = () => {
   return (
     <div className="w-full h-full p-10 flex flex-col overflow-x-hidden gap-10 md:flex-row">
-      <Link to="/learning/books">
+      <Link to="/books">
         <div className="card card-compact min-h-72 w-80 h-80 bg-primary text-white shadow-xl">
           <div className="card-body flex items-center justify-center">
             <h2 className="card-title">Books</h2>
           </div>
         </div>
       </Link>
-      <Link to="/learning/videos">
+      <Link to="/videos">
         <div className="card card-compact w-80 h-80 bg-primary text-white shadow-xl">
           <div className="card-body flex items-center justify-center">
             <h2 className="card-title">Videos</h2>
           </div>
         </div>
       </Link>
-      <Link to="/learning/papers">
+      <Link to="/papers">
         <div className="card card-compact w-80 h-80 bg-primary text-white shadow-xl">
           <div className="card-body flex items-center justify-center">
             <h2 className="card-title">Papers </h2>

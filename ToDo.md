@@ -34,3 +34,7 @@ essential task to move forward -
 main task for today -
 [] - allow admin to CRUD on blog/learning
 [] - try to atleast do 80% basic functionality development of either learning or blog
+
+14 03 1014
+[X] - add create read to blog and learning
+[O] - add delete edit to blog and learning

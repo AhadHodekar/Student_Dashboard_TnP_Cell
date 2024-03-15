@@ -28,6 +28,12 @@ import Training from "./pages/Training/Training";
 import Resume from "./pages/Resume/Resume";
 import Books from "./pages/Learning/components/Books";
 import { useAuth } from "./context/AuthContext";
+import Book from "./pages/Learning/components/Book";
+import BookUploadForm from "./pages/Learning/components/BookUploadForm";
+import Post from "./pages/Blog/components/Post";
+import YoutubeThumbnailPreview from "./pages/Learning/components/YoutubeThumbnailPreview";
+import Videos from "./pages/Learning/components/Videos";
+import VideoUploadForm from "./pages/Learning/components/VideoUploadForm";
 // import { useTheme } from "./context/ThemeContext";
 
 function App() {
@@ -66,15 +72,26 @@ function App() {
             element={!isAuthenticated ? <Login /> : <Navigate to="/" />}
           />
           <Route path="/" element={<Layout />}>
+            <Route path="/book/:id" element={<Book />}></Route>
+            <Route path="/post/:id" element={<Post />}></Route>
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/" element={<Dashboard />}></Route>
               <Route path="/blog" element={<Blog />}></Route>
-              <Route path="/learning" element={<Learning />}>
-                <Route path="/learning/books" element={<Books />}></Route>
-              </Route>
-              <Route path="/training" element={<Training />}></Route>
+              <Route path="/learning" element={<Learning />}></Route>
+              <Route path="/books" element={<Books />}></Route>
+              <Route path="/book-form" element={<BookUploadForm />}></Route>
+              <Route path="/books" element={<Books />}></Route>
+              <Route
+                path="/videourl"
+                element={<YoutubeThumbnailPreview />}
+              ></Route>
+              <Route path="/training" element={<NotFound />}></Route>
               <Route path="/students" element={<Students />}></Route>
-              <Route path="/resume" element={<Resume />}></Route>
+              <Route path="/resume" element={<NotFound />}></Route>
+              <Route path="/videos" element={<Videos />}></Route>
+              <Route path="/video-form" element={<VideoUploadForm />}></Route>
+
+              <Route path="/papers" element={<NotFound />}></Route>
             </Route>
           </Route>
         </Routes>

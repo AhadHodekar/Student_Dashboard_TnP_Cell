@@ -5,6 +5,7 @@ import AdminDashboard from "../Admin/AdminDashboard/AdminDashboard";
 import StudentDashboard from "../Student/StudentDashboard/StudentDashboard";
 import { Navigate } from "react-router-dom";
 import { getContextRole, getRole } from "../../utils/authUtils/authUtils";
+import NotFound from "../NotFound";
 
 const Dashboard = () => {
   // const { role: adminRole } = useAdminContext();
@@ -15,7 +16,7 @@ const Dashboard = () => {
   return (
     <>
       {role === "admin" ? (
-        <AdminDashboard />
+        <NotFound />
       ) : role === "student" ? (
         <StudentDashboard />
       ) : (
